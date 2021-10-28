@@ -1,0 +1,11 @@
+__pycache__/*
+venv/*
+.vscode/*
+*.pyc
+*.spec
+test.py
+debug.js
+App.build/*
+App.dist/*
+*.bat
+*.zip
