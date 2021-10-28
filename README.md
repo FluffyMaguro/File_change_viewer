@@ -1,6 +1,6 @@
 # File change viewer
 
-A simple Python app for monitor when and what files were changed in a selected directory.
+A simple Python app for monitoring when and what files were changed in a selected directory.
 
 **Colors**
 - Black – initial seach & other messages
