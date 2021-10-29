@@ -27,6 +27,7 @@ class MainApp(QtWidgets.QMainWindow):
         menubar = self.menuBar()
         file_menu = menubar.addMenu('File')
         link_menu = menubar.addMenu('Links')
+        setting_menu = menubar.addMenu('Setting')
 
         # Exit
         icon = self.style().standardIcon(
@@ -50,6 +51,17 @@ class MainApp(QtWidgets.QMainWindow):
         maguroAction.triggered.connect(
             partial(webbrowser.open, "https://www.maguro.one/"))
         link_menu.addAction(maguroAction)
+
+        # Init
+        init_log_Action = QtWidgets.QAction('Log initial files', self)
+        init_log_Action.setStatusTip(
+            'Affects whether to show the log of all files when a folder is selected'
+        )
+        init_log_Action.setCheckable(True)
+        init_log_Action.setChecked(True)
+        init_log_Action.triggered.connect(
+            self.centralWidget().search.set_init_log)
+        setting_menu.addAction(init_log_Action)
 
         self.statusBar()
         self.show()

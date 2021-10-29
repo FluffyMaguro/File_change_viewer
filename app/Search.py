@@ -8,17 +8,23 @@ lock = threading.Lock()
 
 
 class Search:
+    base_color = "black"
+    file_deleted_color = "red"
+    file_created_color = "green"
+    file_changed_color = "blue"
+
     def __init__(self, signal: QtCore.pyqtSignal):
         self.folder = None
         self.thread = None
         self.interval = 1
-        self.new_file_color = "black"
         self.signal = signal
         self.file_data = dict()
+        self.init_log = True
+        self.init_search = True
 
     def run(self, path: str):
         """ Runs the search and updates the searched folder
-        
+
         args:
             path : Folder path to search (str)
         """
@@ -30,8 +36,7 @@ class Search:
             with lock:
                 self.folder = path
                 self.file_data = dict()
-                self.new_file_color = "black"
-                self.signal.emit((f'Setting new folder: "{path}"', ))
+                self.init_search = True
 
         # Create a thread for searching
         if self.thread is None:
@@ -46,6 +51,10 @@ class Search:
 
         with lock:
             self.interval = time
+
+    def set_init_log(self, status: bool):
+        with lock:
+            self.init_log = status
 
     def search_thread(self):
         while True:
@@ -63,22 +72,27 @@ class Search:
                 # New file
                 if file_path not in self.file_data:
                     self.file_data[file_path] = changed
-                    self.send_log(file_path, changed, self.new_file_color)
+                    if self.init_search and self.init_log:
+                        self.send_log(file_path, changed, self.base_color)
+
+                    elif not self.init_search:
+                        self.send_log(file_path, changed,
+                                      self.file_created_color)
 
                 # Changed file
                 elif self.file_data[file_path] != changed:
                     self.file_data[file_path] = changed
-                    self.send_log(file_path, changed, "blue")
+                    self.send_log(file_path, changed, self.file_changed_color)
 
         # Deleted files
         now = time.time()
         for f in tuple(self.file_data):
             if f not in found_files:
                 del self.file_data[f]
-                self.send_log(f, now, "red")
+                self.send_log(f, now, self.file_deleted_color)
 
-        # Update color for new files
-        self.new_file_color = "green"
+        # Not an initial search anymore
+        self.init_search = False
 
     def send_log(self, file_path: str, changed: float, color: str):
         """ Passes information about file changes up"""
