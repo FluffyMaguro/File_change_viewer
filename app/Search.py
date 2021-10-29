@@ -2,11 +2,13 @@ import os
 import threading
 import time
 
+from PyQt5 import QtCore
+
 lock = threading.Lock()
 
 
 class Search:
-    def __init__(self, signal):
+    def __init__(self, signal: QtCore.pyqtSignal):
         self.folder = None
         self.thread = None
         self.interval = 1
@@ -23,11 +25,11 @@ class Search:
             return
 
         # Check for new path
-        if path == self.folder:
-            return
-        else:
+        if path != self.folder:
             with lock:
                 self.folder = path
+                self.file_data = dict()
+                self.new_file_color = "black"
                 self.signal.emit((f'Setting new folder: "{path}"', ))
 
         # Create a thread for searching
@@ -45,16 +47,12 @@ class Search:
             self.interval = time
 
     def search_thread(self):
-        self.seach_iter()
-        self.new_file_color = "green"
-
         while True:
-            time.sleep(self.interval)
             self.seach_iter()
+            time.sleep(self.interval)
 
     def seach_iter(self):
         found_files = set()
-
         for root, _, files in os.walk(self.folder):
             for f in files:
                 file_path = os.path.join(root, f)
@@ -78,7 +76,11 @@ class Search:
                 del self.file_data[f]
                 self.send_log(f, now, "red")
 
-    def send_log(self, file_path, changed, color):
+        # Update color for new files
+        self.new_file_color = "green"
+
+    def send_log(self, file_path: str, changed: float, color: str):
+        """ Passes information about file changes up"""
         formatted_time = time.strftime('%Y-%m-%d %H:%M:%S',
                                        time.localtime(changed))
         self.signal.emit((f"{formatted_time} | {file_path}", color))

@@ -16,14 +16,14 @@ class MainApp(QtWidgets.QMainWindow):
         self.setWindowIcon(QtGui.QIcon('src/Icon.ico'))
         self.setGeometry(0, 0, 800, 600)
 
-        # Center
+        # Center the app
         self.move(QtWidgets.QDesktopWidget().availableGeometry().center() -
                   QtCore.QPoint(int(self.width() / 2), int(self.height() / 2)))
 
-        # Create central widget
+        # Create the central widget
         self.setCentralWidget(MainWidget())
 
-        ### Create menu bar items
+        # Create menu bar items
         menubar = self.menuBar()
         file_menu = menubar.addMenu('File')
         link_menu = menubar.addMenu('Links')

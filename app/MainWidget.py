@@ -23,6 +23,7 @@ class MainWidget(QtWidgets.QWidget):
 
         hlayout = QtWidgets.QHBoxLayout()
 
+        # Timer
         self.timer = QtWidgets.QLineEdit("1")
         self.timer.setMaximumWidth(30)
         self.timer.setStatusTip(
@@ -30,7 +31,7 @@ class MainWidget(QtWidgets.QWidget):
         self.timer.textChanged.connect(self.timer_changed)
         hlayout.addWidget(self.timer)
 
-        # Folder
+        # Folder button
         self.folder_button = QtWidgets.QPushButton(self.folder if isinstance(
             self.folder, str) else "Select a folder to search")
         self.folder_button.clicked.connect(self.change_folder)
@@ -39,7 +40,7 @@ class MainWidget(QtWidgets.QWidget):
 
         layout.addLayout(hlayout)
 
-        # Log
+        # Log widget
         self.log_widget = QtWidgets.QListWidget()
         self.log_widget.itemDoubleClicked.connect(self.open_file_location)
         layout.addWidget(self.log_widget)
@@ -68,14 +69,13 @@ class MainWidget(QtWidgets.QWidget):
     def log(self, data: Tuple[str, str]):
         """ Logs data into a widget
         args:
-            data : tuple of message and color"""
+            data : tuple of message and color (or just message)"""
 
         if len(data) == 2:
             message, color = data
         else:
-            message = data[0]
-            color = "black"
-            
+            message, color = data[0], "black"
+
         w = QtWidgets.QListWidgetItem(message, self.log_widget)
         w.setForeground(QtGui.QColor(color))
         self.log_widget.scrollToBottom()
@@ -91,8 +91,7 @@ class MainWidget(QtWidgets.QWidget):
         if dialog.exec_():
             dirpath = dialog.selectedFiles()[0]
             if not os.path.isdir(dirpath):
-
-                print("Not a valid folder")
+                self.log(("Not a valid folder", ))
                 return
 
             if dirpath != self.folder:
