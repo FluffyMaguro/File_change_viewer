@@ -18,6 +18,7 @@ class Search:
 
     def run(self, path: str):
         """ Runs the search and updates the searched folder
+        
         args:
             path : Folder path to search (str)
         """

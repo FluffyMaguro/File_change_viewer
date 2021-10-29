@@ -68,6 +68,7 @@ class MainWidget(QtWidgets.QWidget):
 
     def log(self, data: Tuple[str, str]):
         """ Logs data into a widget
+        
         args:
             data : tuple of message and color (or just message)"""
 
