@@ -63,6 +63,15 @@ class MainApp(QtWidgets.QMainWindow):
             self.centralWidget().search.set_init_log)
         setting_menu.addAction(init_log_Action)
 
+        # Save to file
+        save_data_Action = QtWidgets.QAction('Save log data', self)
+        save_data_Action.setStatusTip('Saves logged data to a file')
+        save_data_Action.setCheckable(True)
+        save_data_Action.setChecked(False)
+        save_data_Action.triggered.connect(
+            self.centralWidget().search.set_save_data)
+        setting_menu.addAction(save_data_Action)
+
         self.statusBar()
         self.show()
 

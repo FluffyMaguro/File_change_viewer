@@ -15,5 +15,5 @@ A simple Python app for monitoring when and what files were changed in a selecte
 - How often the app checks the folder can be customized
  
 
-![Screenshot](https://i.imgur.com/xU69eGF.png)
+![Screenshot](https://i.imgur.com/de7mAIn.png)
 
