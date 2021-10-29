@@ -6,7 +6,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 from app.MainWidget import MainWidget
 
-VERSION = "1.0"
+VERSION = "1.1"
 
 
 class MainApp(QtWidgets.QMainWindow):
@@ -27,7 +27,7 @@ class MainApp(QtWidgets.QMainWindow):
         menubar = self.menuBar()
         file_menu = menubar.addMenu('File')
         link_menu = menubar.addMenu('Links')
-        setting_menu = menubar.addMenu('Setting')
+        setting_menu = menubar.addMenu('Settings')
 
         # Exit
         icon = self.style().standardIcon(

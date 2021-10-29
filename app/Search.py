@@ -44,7 +44,7 @@ class Search:
                                            daemon=True)
             self.thread.start()
 
-    def set_timer(self, time: float):
+    def set_interval(self, time: float):
         if time <= 0:
             self.signal.emit((f'Invalid new interval: {time}', "red"))
             return

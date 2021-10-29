@@ -23,20 +23,24 @@ class MainWidget(QtWidgets.QWidget):
 
         hlayout = QtWidgets.QHBoxLayout()
 
-        # Timer
-        self.timer = QtWidgets.QLineEdit("1")
-        self.timer.setMaximumWidth(30)
-        self.timer.setStatusTip(
-            "Change how often the app searches the directory (seconds)")
-        self.timer.textChanged.connect(self.timer_changed)
-        hlayout.addWidget(self.timer)
-
         # Folder button
         self.folder_button = QtWidgets.QPushButton(self.folder if isinstance(
             self.folder, str) else "Select a folder to search")
         self.folder_button.clicked.connect(self.change_folder)
         self.folder_button.setStatusTip("Change which folder to search")
         hlayout.addWidget(self.folder_button)
+
+        # Timer
+        timer_label = QtWidgets.QLabel("Interval (sec):")
+        timer_label.setMaximumWidth(70)
+        hlayout.addWidget(timer_label)
+
+        interval = QtWidgets.QLineEdit("1")
+        interval.setMaximumWidth(30)
+        interval.setStatusTip(
+            "Change how often the app searches the directory (seconds)")
+        interval.textChanged.connect(self.interval_changed)
+        hlayout.addWidget(interval)
 
         layout.addLayout(hlayout)
 
@@ -48,11 +52,15 @@ class MainWidget(QtWidgets.QWidget):
         # Run
         self.search.run(self.folder)
 
-    def timer_changed(self, time):
-        new_time = float(time)
-        if new_time > 0:
-            self.search.set_timer(new_time)
-            self.log((f"Changing timer to {new_time}", ))
+    def interval_changed(self, time):
+        try:
+            new_interval = float(time)
+        except ValueError:
+            return
+
+        if new_interval > 0:
+            self.search.set_interval(new_interval)
+            self.log((f"Changing interval to {new_interval}", ))
 
     def open_file_location(self, item: QtWidgets.QListWidget):
         """ Opens a location of file or folder"""
