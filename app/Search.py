@@ -98,4 +98,5 @@ class Search:
         """ Passes information about file changes up"""
         formatted_time = time.strftime('%Y-%m-%d %H:%M:%S',
                                        time.localtime(changed))
-        self.signal.emit((f"{formatted_time} | {file_path}", color))
+        self.signal.emit(
+            (f"{formatted_time} | {os.path.normpath(file_path)}", color))
