@@ -66,7 +66,11 @@ class Search:
         for root, _, files in os.walk(self.folder):
             for f in files:
                 file_path = os.path.join(root, f)
-                changed = os.path.getmtime(file_path)
+                try:
+                    changed = os.path.getmtime(file_path)
+                except FileNotFoundError:
+                    continue
+
                 found_files.add(file_path)
 
                 # New file
