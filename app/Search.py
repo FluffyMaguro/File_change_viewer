@@ -75,6 +75,7 @@ class Search:
             self.save_data = status
 
     def calc_save_file_path(self):
+        """ Calculates and updates path where to save logs based on the current folder searched"""
         replacing = (("\\", "-"), ("/", "-"), (" ", ""), (":", ""))
         path = self.folder
         for s1, s2 in replacing:
@@ -125,7 +126,15 @@ class Search:
         self.init_search = False
 
     def send_log(self, file_path: str, changed: float, color: Colors):
-        """ Passes information about file changes up"""
+        """ Passes information about file changes up
+        Saves data to a file if enabled
+        
+        args:
+            file_path: str - path to the file that changed
+            changed: float - time in seconds since the Epoch
+            color: Colors - color of message
+        """
+
         formatted_time = time.strftime('%Y-%m-%d %H:%M:%S',
                                        time.localtime(changed))
         text = f"{formatted_time} | {os.path.normpath(file_path)}"

@@ -99,6 +99,7 @@ class MainWidget(QtWidgets.QWidget):
 
         if dialog.exec_():
             dirpath = dialog.selectedFiles()[0]
+            dirpath = os.path.normpath(dirpath)
             if not os.path.isdir(dirpath):
                 self.log(("Not a valid folder", ))
                 return
