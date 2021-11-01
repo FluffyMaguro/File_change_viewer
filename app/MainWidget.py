@@ -2,7 +2,7 @@ import os
 import subprocess
 from typing import Tuple
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 from app.Search import Search
 
@@ -18,7 +18,7 @@ class MainWidget(QtWidgets.QWidget):
 
         # Layout
         layout = QtWidgets.QVBoxLayout()
-        layout.setAlignment(QtCore.Qt.AlignTop)
+        layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.setLayout(layout)
 
         hlayout = QtWidgets.QHBoxLayout()
@@ -95,9 +95,9 @@ class MainWidget(QtWidgets.QWidget):
         if self.folder is not None:
             dialog.setDirectory(self.folder)
 
-        dialog.setFileMode(QtWidgets.QFileDialog.DirectoryOnly)
+        dialog.setFileMode(QtWidgets.QFileDialog.FileMode.Directory)
 
-        if dialog.exec_():
+        if dialog.exec():
             dirpath = dialog.selectedFiles()[0]
             dirpath = os.path.normpath(dirpath)
             if not os.path.isdir(dirpath):

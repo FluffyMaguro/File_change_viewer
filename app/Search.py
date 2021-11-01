@@ -3,7 +3,7 @@ import threading
 import time
 from enum import Enum
 
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 
 lock = threading.Lock()
 
